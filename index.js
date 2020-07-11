@@ -3,6 +3,7 @@ const http = require('http');
 const morgan = require('morgan')
 const bodyParser = require('body-parser');
 
+const dishRouter = require('./routes/dishRouter')
 
 const hostname = "localhost";
 const port = "3000";
@@ -10,32 +11,7 @@ const port = "3000";
 const app = express();
 app.use(morgan('dev'));
 app.use(bodyParser.json())
-
-app.all('/dishes', (req, res, next) => {
-    res.status = 200;
-    res.setHeader("Content-Type", "text/plain");
-    
-    next();
-})
-
-app.get('/dishes', (req, res, next) => {
-    res.end('All the dishes are returned to client')    
-  
-})
-
-app.post('/dishes', (req, res, next) => {
-    res.end('Posting dishes to server - ' + req.body.name +
-    ' with details: ' + req.body.des)    
-})
-
-app.put('/dishes', (req, res, next) => {
-    res.status = 403
-    res.end('Operation not supported on Dishes')    
-})
-
-app.delete('/dishes', (req, res, next) => {
-    res.end('Deleting all the Dishes')    
-})
+app.use('/dishes', dishRouter)
 
 
 app.get('/dishes/:dishId', (req, res, next) => {
